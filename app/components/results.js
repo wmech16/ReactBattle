@@ -1,13 +1,12 @@
-var React = require('react');
-var PropTypes = require('prop-types');
-var queryString = require('query-string');
-var api = require('../utils/api');
-var Link = require('react-router-dom').Link;
-var PlayerPreview = require('./playerPreview');
-var Loading = require('./loading');
+import React from 'react';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import api from '../utils/api';
+import { Link } from 'react-router-dom';
+import PlayerPreview from './playerPreview';
+import Loading from './loading';
 
-function Profile(props) {
-	var info = props.info;
+function Profile({info}) {
 	return (
 		<PlayerPreview avatar={info.avatar_url} username={info.login}>
 			<ul className="space-list-items">
@@ -55,21 +54,21 @@ class Results extends React.Component {
 		}
 	}
 	componentDidMount() {
-		var players = queryString.parse(this.props.location.search);
+		let players = queryString.parse(this.props.location.search);
 		api.battle([
 			players.playerOneName,
 			players.playerTwoName
-		]).then(function(results) {
+		]).then((results) => {
 			if (results === null) {
 				return this.setState(function() {
 					return {
-						error: 'Looks like there was an error. Check that both users exist on Github',
+						error: `Looks like there was an error. Check that both users exist on Github`,
 						loading: false,
 					}
 				});
 			}
 
-			this.setState(function() {
+			this.setState(() => {
 				return {
 					error: null,
 					winner: results[0],
@@ -77,14 +76,14 @@ class Results extends React.Component {
 					loading: false
 				}
 			})
-		}.bind(this));
+		});
 
 	}
 	render() {
-		var error = this.state.error;
-		var winner = this.state.winner;
-		var loser = this.state.loser;
-		var loading = this.state.loading;
+		let error = this.state.error;
+		let winner = this.state.winner;
+		let loser = this.state.loser;
+		let loading = this.state.loading;
 
 		if (loading === true) {
 			return <Loading />
@@ -117,4 +116,4 @@ class Results extends React.Component {
 	}
 }
 
-module.exports = Results;
+export default Results;

@@ -1,18 +1,18 @@
-var React = require('react');
-var PropTypes = require('prop-types');
-var api = require('../utils/api');
-var Loading = require('./loading');
+import React from 'react';
+import PropTypes from 'prop-types';
+import api from '../utils/api';
+import Loading from './loading';
 
-function SelectLanguage (props) {
-	var languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python', 'Swift'];
+function SelectLanguage ({selectedLanguage, onSelect}) {
+	let languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python', 'Swift'];
 
 	return (
 		<ul className='languages'>
-			{languages.map(function(lang) {
+			{languages.map((lang) => {
 				return (
 					<li
-						style={lang === props.selectedLanguage ? {color: '#d0021b'}: null}
-						onClick={props.onSelect.bind(null, lang)}
+						style={lang === selectedLanguage ? {color: '#d0021b'}: null}
+						onClick={onSelect.bind(null, lang)}
 						key={lang}>
 						{lang}
 					</li>
@@ -25,7 +25,7 @@ function SelectLanguage (props) {
 function RepoGrid(props) {
 	return (
 		<ul className="popular-list">
-			{props.repos.map(function(repo, index) {
+			{props.repos.map((repo, index) => {
 				return (
 					<li key={repo.name} className='popular-item'>
 						<div className="popular-rank">#{index + 1}</div>
@@ -34,7 +34,7 @@ function RepoGrid(props) {
 								<img 
 									className = 'avatar'
 									src={repo.owner.avatar_url} 
-									alt = {'Avatar for ' + repo.owner.login} />
+									alt = {`Avatar for${repo.owner.login}`} />
 							</li>
 							<li>
 								<a href={repo.html_url}>{repo.name}</a>
@@ -77,20 +77,20 @@ class Popular extends React.Component {
 	}
 
 	updateLanguage(lang) {
-		this.setState(function() {
+		this.setState(() => {
 			return {
 				selectedLanguage: lang,
 				repos: null
 			}
 		});
 		api.fetchPopularRepos(lang)
-			.then(function(repos) {
-				this.setState(function() {
+			.then((repos) => {
+				this.setState(() => {
 					return {
 						repos: repos
 					}
 				})
-			}.bind(this));
+			});
 	}
 	render() {
 		return (
@@ -107,4 +107,4 @@ class Popular extends React.Component {
 	}
 }
 
-module.exports = Popular;
+export default Popular;
